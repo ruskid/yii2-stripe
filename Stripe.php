@@ -15,7 +15,7 @@ use yii\base\Exception;
  *
  * @author Victor Demin <demmbox@gmail.com>
  */
-class YiiStripe extends \yii\base\Component {
+class Stripe extends \yii\base\Component {
 
     /**
      * @see Stripe
@@ -42,3 +42,4 @@ class YiiStripe extends \yii\base\Component {
     }
 
 }
+
