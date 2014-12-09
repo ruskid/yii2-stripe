@@ -70,7 +70,7 @@ class StripeCheckoutCustom extends StripeCheckout {
         if (!isset($this->openedFunction)) {
             $this->openedFunction = new JsExpression('function() { }');
         }
-        if (!isset($this->closedFunctionFunction)) {
+        if (!isset($this->closedFunction)) {
             $this->closedFunction = new JsExpression('function() { }');
         }
         parent::init();
