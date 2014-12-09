@@ -18,7 +18,7 @@ use yii\web\JsExpression;
  *
  * @author Victor Demin <demmbox@gmail.com>
  */
-class YiiStripeCustomModal extends YiiStripeModal {
+class StripeCheckoutCustom extends StripeCheckout {
 
     /**
      * Custom button options
