@@ -2,8 +2,8 @@
 
 /**
  * @copyright Copyright Victor Demin, 2014
- * @license https://github.com/ruskid/yii-stripe/LICENSE
- * @link https://github.com/ruskid/yii-stripe#readme
+ * @license https://github.com/ruskid/yii2-stripe/LICENSE
+ * @link https://github.com/ruskid/yii2-stripe#readme
  */
 
 namespace ruskid\stripe;
