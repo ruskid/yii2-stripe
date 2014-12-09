@@ -17,7 +17,7 @@ use yii\helpers\Html;
  *
  * @author Victor Demin <demmbox@gmail.com>
  */
-class YiiStripeModal extends \yii\base\Widget {
+class StripeCheckout extends \yii\base\Widget {
 
     /**
      * Form's action that will perform a charge
@@ -67,7 +67,7 @@ class YiiStripeModal extends \yii\base\Widget {
      * @see Stripe. The text to be shown on the default blue button.
      * @var string label
      */
-    public $label;
+    public $label = 'Pay';
 
     /**
      * @see Stripe. The label of the payment button in the Checkout form (e.g. “Subscribe”, “Pay {{amount}}”, etc.).
@@ -101,8 +101,8 @@ class YiiStripeModal extends \yii\base\Widget {
      * @see Init extension default
      */
     public function init() {
-        YiiStripeHelper::prepareBoolean($this->allowRemember);
-        YiiStripeHelper::prepareBoolean($this->validateZipCode);
+        StripeHelper::prepareBoolean($this->allowRemember);
+        StripeHelper::prepareBoolean($this->validateZipCode);
         parent::init();
     }
 
