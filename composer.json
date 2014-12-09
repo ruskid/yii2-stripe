@@ -16,6 +16,8 @@
     },
     "minimum-stability": "dev",
     "autoload": {
-         "psr-4": {"ruskid\\stripe\\": "/"}
+         "psr-4": {
+             "ruskid\\stripe\\": ""
+         }
     }
 }
