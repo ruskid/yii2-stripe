@@ -1,0 +1,21 @@
+{
+    "name": "ruskid/yii-stripe",
+    "type": "library",
+    "description": "Yii2 Stripe Wrapper",
+    "keywords": ["yii2","stripe"],
+    "homepage": "https://github.com/ruskid/yii-stripe",
+    "license": "GNU",
+    "authors": [
+        {
+            "name": "Victor Demin",
+            "email": "demmbox@gmail.com"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "*"
+    },
+    "minimum-stability": "dev",
+    "autoload": {
+         "psr-4": {"ruskid\\stripe\\": "/"}
+    }
+}
