@@ -1,13 +1,13 @@
-Yii2 Stripe wrapper. (Widgets and helpers)
+Yii2 Stripe wrapper.
 ==========
 28/11/2014.
-Simple and custom embedded checkout forms implemented. 
-https://stripe.com/docs/checkout#integration-simple
-https://stripe.com/docs/checkout#integration-custom
+Simple and custom embedded <b>checkout</b> forms implemented. 
+<p>https://stripe.com/docs/checkout#integration-simple</p>
+<p>https://stripe.com/docs/checkout#integration-custom</p>
 
 TODO:
-I want to do custom forms and maybe add PayAction for faster use.
-https://stripe.com/docs/tutorials/forms
+I want to do custom forms and maybe add PayAction for a faster use.
+<p>https://stripe.com/docs/tutorials/forms</p>
 
 Installation
 --------------------------
@@ -51,7 +51,13 @@ YiiStripeCustomModal::widget([
     'name' => 'Demo test',
     'description' => '2 widgets ($20.00)',
     'amount' => 2000,
-    'image' => '/128x128.png'
+    'image' => '/128x128.png',
+    'buttonOptions' => [
+        'class' => 'btn btn-lg btn-success',
+    ],
+    'tokenFunction' => new JsExpression('function(token) { alert("Here you should control your token."); }'),
+    'openedFunction' => new JsExpression('function() { alert("Model opened"); }'),
+    'closedFunction' => new JsExpression('function() { alert("Model closed"); }'),
 ]);
 ?>
 ```
