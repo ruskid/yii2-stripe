@@ -1,9 +1,9 @@
 {
-    "name": "ruskid/yii-stripe",
+    "name": "ruskid/yii2-stripe",
     "type": "library",
     "description": "Yii2 Stripe Wrapper",
     "keywords": ["yii2","stripe"],
-    "homepage": "https://github.com/ruskid/yii-stripe",
+    "homepage": "https://github.com/ruskid/yii2-stripe",
     "license": "GNU",
     "authors": [
         {
