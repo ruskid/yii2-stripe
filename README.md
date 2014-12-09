@@ -97,5 +97,6 @@ Example of a custom form. StripeForm is an extended active form so you can perfo
  <?= $form->monthInput() ?>
 
  <div id="payment-errors"></div>
+ <?php StripeForm::end(); ?>
 ```
 
