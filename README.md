@@ -52,6 +52,7 @@ Add a new component in main.php
 To render simple checkout form just call the widget in the view, it will automatically register the scripts.
 Check stripe documentation for more options.
 ```php
+use ruskid\stripe\StripeCheckout;
 <?= 
 StripeCheckout::widget([
     'action' => '/',
