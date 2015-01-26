@@ -9,8 +9,8 @@ https://stripe.com/docs/checkout#integration-custom <br />
 Custom forms implemented and small fixes + composer. <br />
 https://stripe.com/docs/tutorials/forms <br />
 
-<b>TODO:</b>
-Maybe want to add PayAction for a faster use. and Jquery Payment library as an optional add on. <br />
+<b>In plans:</b>
+Maybe will add PayAction and Jquery Payment library (optional). <br />
 https://stripe.com/docs/tutorials/forms <br />
 https://github.com/stripe/jquery.payment <br />
 
@@ -53,6 +53,7 @@ To render simple checkout form just call the widget in the view, it will automat
 Check stripe documentation for more options.
 ```php
 use ruskid\stripe\StripeCheckout;
+
 <?= 
 StripeCheckout::widget([
     'action' => '/',
@@ -66,6 +67,8 @@ StripeCheckout::widget([
 
 Custom checkout form is an extended version of simple form, but you can customize the button (see buttonOptions) and handle token as you want (tokenFunction).
 ```php
+use ruskid\stripe\StripeCheckoutCustom;
+
 <?= 
 StripeCheckoutCustom::widget([
     'action' => '/',
@@ -86,6 +89,8 @@ Full copy of https://stripe.com/docs/tutorials/forms.
 Example of a custom form. StripeForm is an extended active form so you can perform validation of amount and other attributes you want. To render the card inputs use 4 following methods. You can change the token name that will be sent to your action and error's container id. You can also change JsExpression for response and request handlers.
 
 ```php
+use ruskid\stripe\StripeForm;
+
  <?php $form = StripeForm::begin([
         'tokenInputName' => 'stripeToken',
         'errorContainerId' => 'payment-errors',
