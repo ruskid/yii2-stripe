@@ -118,10 +118,7 @@ class StripeCheckout extends \yii\base\Widget {
      * @return string the generated stripe's modal form
      */
     private function generateStripeForm() {
-        return Html::tag('form', $this->generateScriptTag(), array(
-                    'action' => $this->action,
-                    'method' => 'POST',
-        ));
+        return Html::beginForm($this->action, 'POST') . $this->generateScriptTag() . Html::endForm();
     }
 
     /**
