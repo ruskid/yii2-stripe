@@ -97,6 +97,8 @@ class StripeCheckout extends \yii\base\Widget {
      */
     public $allowRemember;
 
+    const BUTTON_CLASS = 'stripe-button';
+
     /**
      * @see Init extension default
      */
@@ -138,7 +140,7 @@ class StripeCheckout extends \yii\base\Widget {
                     'data-email' => $this->userEmail,
                     'data-label' => $this->label,
                     'data-allow-remember-me' => $this->allowRemember,
-                    'class' => 'stripe-button',
+                    'class' => self::BUTTON_CLASS,
         ]);
     }
 
