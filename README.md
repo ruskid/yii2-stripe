@@ -88,17 +88,40 @@ You can change the token name that will be sent to your action and error's conta
 ```php
 use ruskid\stripe\StripeForm;
 
- <?php $form = StripeForm::begin([
-        'tokenInputName' => 'stripeToken',
-        'errorContainerId' => 'payment-errors',
-        'options' => ['autocomplete' => 'on']
- ]); ?>
- <?= $form->field($model, 'amount') ?>
- 
- <?= $form->numberInput(['class' => 'form-control']) ?>
- <?= $form->cvcInput() ?>
- <?= $form->yearInput() ?>
- <?= $form->monthInput() ?>
+ <?php
+ $form = StripeForm::begin([
+             'tokenInputName' => 'stripeToken',
+             'errorContainerId' => 'payment-errors',
+             'options' => ['autocomplete' => 'on']
+ ]);
+ ?>
+
+ <div class="form-group">
+     <label for="number" class="control-label">Card number</label>
+     <?= $form->numberInput() ?>
+ </div>
+
+ <div class="form-group">
+     <label for="cvc" class="control-label">CVC</label>
+     <?= $form->cvcInput() ?>
+ </div>
+
+ <!-- Use month and year in the same input. -->
+ <div class="form-group">
+     <label for="cvc" class="control-label">Card expiry</label>
+     <?= $form->monthAndYearInput() ?>
+ </div>
+
+ <!-- OR in two separate inputs. -->
+ <div class="form-group">
+     <label for="cvc" class="control-label">Month</label>
+     <?= $form->monthInput() ?>
+ </div>
+
+ <div class="form-group">
+     <label for="cvc" class="control-label">Year</label>
+     <?= $form->yearInput() ?>
+ </div>
 
  <div id="payment-errors"></div>
  <?php StripeForm::end(); ?>

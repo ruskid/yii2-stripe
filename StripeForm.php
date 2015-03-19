@@ -83,17 +83,17 @@ class StripeForm extends \yii\widgets\ActiveForm {
     public $errorContainerId = "payment-errors";
 
     /**
-     * This will load Jquery Payment library and apply format to the inputs.
+     * Apply Jquery Payment format to the inputs
      * @see https://github.com/stripe/jquery.payment.
      * @var boolean
      */
-    public $useJqueryPayment = true;
+    public $applyJqueryPaymentFormat = true;
 
     /**
      * Perform Jquery Payment client validation.
      * @var boolean
      */
-    public $performJqueryPaymentValidation = true;
+    public $applyJqueryPaymentValidation = true;
 
     //Stripe constants
     const NUMBER_ID = 'number';
@@ -146,7 +146,7 @@ class StripeForm extends \yii\widgets\ActiveForm {
      */
     public function run() {
         $this->registerFormScripts();
-        if ($this->useJqueryPayment) {
+        if ($this->applyJqueryPaymentFormat || $this->applyJqueryPaymentValidation) {
             $this->registerJqueryPaymentScripts();
         }
     }
@@ -167,23 +167,41 @@ class StripeForm extends \yii\widgets\ActiveForm {
     }
 
     /**
-     * Will register jquery payment scripts and apply them to the inputs.
+     * Will register Jquery Payment scripts
      */
     public function registerJqueryPaymentScripts() {
         $view = $this->getView();
         JqueryPaymentAsset::register($view);
 
-        $js = "jQuery(function($) {
+        if ($this->applyJqueryPaymentFormat) {
+            $js = "jQuery(function($) {
                 $('input[data-stripe=" . self::NUMBER_ID . "]').payment('formatCardNumber');
                 $('input[data-stripe=" . self::CVC_ID . "]').payment('formatCardCVC');
                 $('input[data-stripe=" . self::MONTH_YEAR_ID . "]').payment('formatCardExpiry');
                 $('input[data-stripe=" . self::MONTH_ID . "]').payment('restrictNumeric');
                 $('input[data-stripe=" . self::YEAR_ID . "]').payment('restrictNumeric');
-        });";
-        $view->registerJs($js);
+            });";
+            $view->registerJs($js);
+        }
 
-        if ($this->performJqueryPaymentValidation) {
-            
+        if ($this->applyJqueryPaymentValidation) {
+            /* $js = "jQuery(function($) {
+              $.fn.toggleInputError = function(erred) {
+              this.parent('.form-group').toggleClass('has-error', erred);
+              return this;
+              };
+
+              $('form').submit(function(e) {
+              e.preventDefault();
+              var cardType = $.payment.cardType($('.cc-number').val());
+              $('.cc-number').toggleInputError(!$.payment.validateCardNumber($('.cc-number').val()));
+              $('.cc-exp').toggleInputError(!$.payment.validateCardExpiry($('.cc-exp').payment('cardExpiryVal')));
+              $('.cc-cvc').toggleInputError(!$.payment.validateCardCVC($('.cc-cvc').val(), cardType));
+              $('.cc-brand').text(cardType);
+              $('.validation').removeClass('text-danger text-success');
+              $('.validation').addClass($('.has-error').length ? 'text-danger' : 'text-success');
+              });
+              });"; */
         }
     }
 
@@ -195,6 +213,7 @@ class StripeForm extends \yii\widgets\ActiveForm {
     public function numberInput($options = []) {
         if (empty($options)) {
             $options = [
+                'id' => self::NUMBER_ID,
                 'class' => 'form-control',
                 'autocomplete' => self::AUTO_CC_ATTR,
                 'placeholder' => '•••• •••• •••• ••••',
@@ -217,6 +236,7 @@ class StripeForm extends \yii\widgets\ActiveForm {
     public function cvcInput($options = []) {
         if (empty($options)) {
             $options = [
+                'id' => self::CVC_ID,
                 'class' => 'form-control',
                 'autocomplete' => 'off',
                 'placeholder' => '•••',
@@ -239,6 +259,7 @@ class StripeForm extends \yii\widgets\ActiveForm {
     public function yearInput($options = []) {
         if (empty($options)) {
             $options = [
+                'id' => self::YEAR_ID,
                 'class' => 'form-control',
                 'autocomplete' => self::AUTO_YEAR_ATTR,
                 'placeholder' => '••••',
@@ -262,6 +283,7 @@ class StripeForm extends \yii\widgets\ActiveForm {
     public function monthInput($options = []) {
         if (empty($options)) {
             $options = [
+                'id' => self::MONTH_ID,
                 'class' => 'form-control',
                 'autocomplete' => self::AUTO_MONTH_ATTR,
                 'placeholder' => '••',
@@ -285,6 +307,7 @@ class StripeForm extends \yii\widgets\ActiveForm {
     public function monthAndYearInput($options = []) {
         if (empty($options)) {
             $options = [
+                'id' => self::MONTH_YEAR_ID,
                 'class' => 'form-control',
                 'autocomplete' => self::AUTO_EXP_ATTR,
                 'placeholder' => '•• / ••',
