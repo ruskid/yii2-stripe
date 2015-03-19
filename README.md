@@ -1,14 +1,5 @@
 Yii2 Stripe Wrapper.
 ==========
-<b>28/11/2014</b>
-Simple and custom embedded <b>checkout</b> forms implemented. <br />
-https://stripe.com/docs/checkout#integration-simple <br />
-https://stripe.com/docs/checkout#integration-custom <br />
-
-<b>09/12/2014</b>
-Custom forms implemented and small fixes + composer. <br />
-https://stripe.com/docs/tutorials/forms <br />
-
 <b>In plans:</b>
 Maybe will add PayAction and Jquery Payment library (optional). <br />
 https://stripe.com/docs/tutorials/forms <br />
@@ -79,14 +70,20 @@ StripeCheckoutCustom::widget([
     'buttonOptions' => [
         'class' => 'btn btn-lg btn-success',
     ],
-    'tokenFunction' => new JsExpression('function(token) { alert("Here you should control your token."); }'),
-    'openedFunction' => new JsExpression('function() { alert("Model opened"); }'),
-    'closedFunction' => new JsExpression('function() { alert("Model closed"); }'),
+    'tokenFunction' => new JsExpression('function(token) { 
+                alert("Here you should control your token."); 
+    }'),
+    'openedFunction' => new JsExpression('function() { 
+                alert("Model opened"); 
+    }'),
+    'closedFunction' => new JsExpression('function() { 
+                alert("Model closed"); 
+    }'),
 ]);
 ?>
 ```
-Full copy of https://stripe.com/docs/tutorials/forms.
-Example of a custom form. StripeForm is an extended active form so you can perform validation of amount and other attributes you want. To render the card inputs use 4 following methods. You can change the token name that will be sent to your action and error's container id. You can also change JsExpression for response and request handlers.
+Example of a custom form. StripeForm is an <b>extended ActiveForm</b> so you can perform validation of amount and other attributes you want. 
+You can change the token name that will be sent to your action and error's container id. You can also change JsExpression for response and request handlers.
 
 ```php
 use ruskid\stripe\StripeForm;
@@ -94,6 +91,7 @@ use ruskid\stripe\StripeForm;
  <?php $form = StripeForm::begin([
         'tokenInputName' => 'stripeToken',
         'errorContainerId' => 'payment-errors',
+        'options' => ['autocomplete' => 'on']
  ]); ?>
  <?= $form->field($model, 'amount') ?>
  

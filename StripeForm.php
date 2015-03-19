@@ -83,20 +83,27 @@ class StripeForm extends \yii\widgets\ActiveForm {
     public $errorContainerId = "payment-errors";
 
     /**
-     * This will load jquery payment library which i find very useful. You can disable it by setting this property to false
-     * https://github.com/stripe/jquery.payment. NOT IMPLEMENTED YET.
+     * This will load Jquery Payment library and apply format to the inputs.
+     * @see https://github.com/stripe/jquery.payment.
      * @var boolean
      */
-    public $useJqueryPayment = false;
+    public $useJqueryPayment = true;
+
+    /**
+     * Perform Jquery Payment client validation.
+     * @var boolean
+     */
+    public $performJqueryPaymentValidation = true;
 
     //Stripe constants
     const NUMBER_ID = 'number';
     const CVC_ID = 'cvc';
     const MONTH_ID = 'exp-month';
     const YEAR_ID = 'exp-year';
+    const MONTH_YEAR_ID = 'exp-month-year'; //actually not stripe =)
     //Autofill spec. @see https://html.spec.whatwg.org/multipage/forms.html
     const AUTO_CC_ATTR = 'cc-number';
-    const AUTO_EXP_ATTR = 'cc-exp'; //todo.
+    const AUTO_EXP_ATTR = 'cc-exp';
     const AUTO_MONTH_ATTR = 'cc-exp-month';
     const AUTO_YEAR_ATTR = 'cc-exp-year';
 
@@ -168,10 +175,16 @@ class StripeForm extends \yii\widgets\ActiveForm {
 
         $js = "jQuery(function($) {
                 $('input[data-stripe=" . self::NUMBER_ID . "]').payment('formatCardNumber');
-                //$('input[data-stripe=" . self::CVC_ID . "]').payment('formatCardExpiry');
-                $('input[data-stripe=" . self::CVC_ID . ").payment('formatCardCVC');
+                $('input[data-stripe=" . self::CVC_ID . "]').payment('formatCardCVC');
+                $('input[data-stripe=" . self::MONTH_YEAR_ID . "]').payment('formatCardExpiry');
+                $('input[data-stripe=" . self::MONTH_ID . "]').payment('restrictNumeric');
+                $('input[data-stripe=" . self::YEAR_ID . "]').payment('restrictNumeric');
         });";
         $view->registerJs($js);
+
+        if ($this->performJqueryPaymentValidation) {
+            
+        }
     }
 
     /**
@@ -187,6 +200,7 @@ class StripeForm extends \yii\widgets\ActiveForm {
                 'placeholder' => '•••• •••• •••• ••••',
                 'required' => true,
                 'type' => 'tel',
+                'size' => 20
             ];
         } else {
             StripeHelper::secCheck($options);
@@ -208,6 +222,7 @@ class StripeForm extends \yii\widgets\ActiveForm {
                 'placeholder' => '•••',
                 'required' => true,
                 'type' => 'tel',
+                'size' => 4
             ];
         } else {
             StripeHelper::secCheck($options);
@@ -229,6 +244,8 @@ class StripeForm extends \yii\widgets\ActiveForm {
                 'placeholder' => '••••',
                 'required' => true,
                 'type' => 'tel',
+                'maxlength' => 4,
+                'size' => 4
             ];
         } else {
             StripeHelper::secCheck($options);
@@ -250,11 +267,34 @@ class StripeForm extends \yii\widgets\ActiveForm {
                 'placeholder' => '••',
                 'required' => true,
                 'type' => 'tel',
+                'maxlength' => 2,
+                'size' => 2
             ];
         } else {
             StripeHelper::secCheck($options);
         }
         $options['data-stripe'] = self::MONTH_ID;
+        return Html::input('text', null, null, $options);
+    }
+
+    /**
+     * Will generate month and year input. Like in Jquery Payment example.
+     * @param array $options
+     * @return string genetared input tag
+     */
+    public function monthAndYearInput($options = []) {
+        if (empty($options)) {
+            $options = [
+                'class' => 'form-control',
+                'autocomplete' => self::AUTO_EXP_ATTR,
+                'placeholder' => '•• / ••',
+                'required' => true,
+                'type' => 'tel',
+            ];
+        } else {
+            StripeHelper::secCheck($options);
+        }
+        $options['data-stripe'] = self::MONTH_YEAR_ID;
         return Html::input('text', null, null, $options);
     }
 
