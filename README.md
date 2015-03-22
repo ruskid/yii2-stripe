@@ -108,18 +108,18 @@ use ruskid\stripe\StripeForm;
 
  <!-- Use month and year in the same input. -->
  <div class="form-group">
-     <label for="cvc" class="control-label">Card expiry</label>
+     <label for="exp-month-year" class="control-label">Card expiry</label>
      <?= $form->monthAndYearInput() ?>
  </div>
 
  <!-- OR in two separate inputs. -->
  <div class="form-group">
-     <label for="cvc" class="control-label">Month</label>
+     <label for="exp-month" class="control-label">Month</label>
      <?= $form->monthInput() ?>
  </div>
 
  <div class="form-group">
-     <label for="cvc" class="control-label">Year</label>
+     <label for="exp-year" class="control-label">Year</label>
      <?= $form->yearInput() ?>
  </div>
 
