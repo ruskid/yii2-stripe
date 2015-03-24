@@ -141,7 +141,7 @@ class StripeForm extends \yii\widgets\ActiveForm {
         }
 
         //Set default request behavior when no client validation applied
-        if (!isset($this->stripeRequestHandler) && !$this->applyJqueryPaymentValidation) {
+        if (!isset($this->stripeRequestHandler)) {
             $this->stripeRequestHandler = 'jQuery(function($) {
                 $("#' . $this->options['id'] . '").submit(function(event) {
                     var $form = $(this);
@@ -203,9 +203,8 @@ class StripeForm extends \yii\widgets\ActiveForm {
                     return this;
                 };
 
-                $("#' . $this->options['id'] . '").submit(function(e) {
-                    e.preventDefault();
-                    var $form = $(this);
+                $("#' . $this->options['id'] . ' button").on("click", function(e) {
+                    var $form = $("#' . $this->options['id'] . '");
                     var $number = $("input[data-stripe=' . self::NUMBER_ID . ']");
                     var $cvc = $("input[data-stripe=' . self::CVC_ID . ']");
                     var $exp = $("input[data-stripe=' . self::MONTH_YEAR_ID . ']");
@@ -222,11 +221,9 @@ class StripeForm extends \yii\widgets\ActiveForm {
 
                     $("#' . $this->brandContainerId . '").text(cardType);
 
-                    if($form.find(".' . $this->errorClass . '").length == 0){
-                        $form.find("button").prop("disabled", true);
-                        Stripe.card.createToken($form, stripeResponseHandler);
+                    if($form.find(".' . $this->errorClass . '").length != 0){
+                        e.preventDefault();
                     }
-                    return false;
                 });
             });';
             $view->registerJs($js);
