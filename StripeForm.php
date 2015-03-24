@@ -95,6 +95,18 @@ class StripeForm extends \yii\widgets\ActiveForm {
      */
     public $applyJqueryPaymentValidation = true;
 
+    /**
+     * Class applied to .form-group when Jquery Payment Validation didn't pass
+     * @var string
+     */
+    public $errorClass = 'has-error';
+
+    /**
+     * Brand container used when Jquery Payment identify the brand by card number
+     * @var string
+     */
+    public $brandContainerId = 'cc-brand';
+
     //Stripe constants
     const NUMBER_ID = 'number';
     const CVC_ID = 'cvc';
@@ -128,8 +140,8 @@ class StripeForm extends \yii\widgets\ActiveForm {
             };';
         }
 
-        //Set default request behavior
-        if (!isset($this->stripeRequestHandler)) {
+        //Set default request behavior when no client validation applied
+        if (!isset($this->stripeRequestHandler) && !$this->applyJqueryPaymentValidation) {
             $this->stripeRequestHandler = 'jQuery(function($) {
                 $("#' . $this->options['id'] . '").submit(function(event) {
                     var $form = $(this);
@@ -183,25 +195,41 @@ class StripeForm extends \yii\widgets\ActiveForm {
             });";
             $view->registerJs($js);
         }
-
+        //Jquery client validation submit
         if ($this->applyJqueryPaymentValidation) {
-            /* $js = "jQuery(function($) {
-              $.fn.toggleInputError = function(erred) {
-              this.parent('.form-group').toggleClass('has-error', erred);
-              return this;
-              };
+            $js = 'jQuery(function($) {
+                $.fn.toggleInputError = function(erred) {
+                    this.parent(".form-group").toggleClass("' . $this->errorClass . '", erred);
+                    return this;
+                };
 
-              $('form').submit(function(e) {
-              e.preventDefault();
-              var cardType = $.payment.cardType($('.cc-number').val());
-              $('.cc-number').toggleInputError(!$.payment.validateCardNumber($('.cc-number').val()));
-              $('.cc-exp').toggleInputError(!$.payment.validateCardExpiry($('.cc-exp').payment('cardExpiryVal')));
-              $('.cc-cvc').toggleInputError(!$.payment.validateCardCVC($('.cc-cvc').val(), cardType));
-              $('.cc-brand').text(cardType);
-              $('.validation').removeClass('text-danger text-success');
-              $('.validation').addClass($('.has-error').length ? 'text-danger' : 'text-success');
-              });
-              });"; */
+                $("#' . $this->options['id'] . '").submit(function(e) {
+                    e.preventDefault();
+                    var $form = $(this);
+                    var $number = $("input[data-stripe=' . self::NUMBER_ID . ']");
+                    var $cvc = $("input[data-stripe=' . self::CVC_ID . ']");
+                    var $exp = $("input[data-stripe=' . self::MONTH_YEAR_ID . ']");
+                    var $month = $("input[data-stripe=' . self::MONTH_ID . ']");
+                    var $year = $("input[data-stripe=' . self::YEAR_ID . ']");
+
+                    var cardType = $.payment.cardType($number.val());
+
+                    $number.toggleInputError(!$.payment.validateCardNumber($number.val()));
+                    $exp.toggleInputError(!$.payment.validateCardExpiry($exp.payment("cardExpiryVal")));
+                    $cvc.toggleInputError(!$.payment.validateCardCVC($cvc.val(), cardType));
+                    $month.toggleInputError(!$.payment.validateCardExpiry($month.val(), $year.val()));
+                    $year.toggleInputError(!$.payment.validateCardExpiry($month.val(), $year.val()));
+
+                    $("#' . $this->brandContainerId . '").text(cardType);
+
+                    if($form.find(".' . $this->errorClass . '").length == 0){
+                        $form.find("button").prop("disabled", true);
+                        Stripe.card.createToken($form, stripeResponseHandler);
+                    }
+                    return false;
+                });
+            });';
+            $view->registerJs($js);
         }
     }
 

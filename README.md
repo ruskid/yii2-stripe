@@ -1,10 +1,5 @@
 Yii2 Stripe Wrapper.
 ==========
-<b>In plans:</b>
-Maybe will add PayAction and Jquery Payment library (optional). <br />
-https://stripe.com/docs/tutorials/forms <br />
-https://github.com/stripe/jquery.payment <br />
-
 Installation
 --------------------------
 
@@ -83,7 +78,8 @@ StripeCheckoutCustom::widget([
 ?>
 ```
 Example of a custom form. StripeForm is an <b>extended ActiveForm</b> so you can perform validation of amount and other attributes you want. 
-You can change the token name that will be sent to your action and error's container id. You can also change JsExpression for response and request handlers.
+Use of <b>Jquery Payment library</b> is optional, you can disable format and validation and write your own implementation.
+You can also change JsExpression for response and request handlers.
 
 ```php
 use ruskid\stripe\StripeForm;
@@ -92,12 +88,17 @@ use ruskid\stripe\StripeForm;
  $form = StripeForm::begin([
              'tokenInputName' => 'stripeToken',
              'errorContainerId' => 'payment-errors',
+             'brandContainerId' => 'cc-brand',
+             'errorClass' => 'has-error',
+             'applyJqueryPaymentFormat' => true,
+             'applyJqueryPaymentValidation' => true,
              'options' => ['autocomplete' => 'on']
  ]);
  ?>
 
  <div class="form-group">
      <label for="number" class="control-label">Card number</label>
+     <span id="cc-brand"></span>
      <?= $form->numberInput() ?>
  </div>
 
