@@ -212,14 +212,21 @@ class StripeForm extends \yii\widgets\ActiveForm {
                     var $year = $("input[data-stripe=' . self::YEAR_ID . ']");
 
                     var cardType = $.payment.cardType($number.val());
+                    $("#' . $this->brandContainerId . '").text(cardType);
 
                     $number.toggleInputError(!$.payment.validateCardNumber($number.val()));
-                    $exp.toggleInputError(!$.payment.validateCardExpiry($exp.payment("cardExpiryVal")));
                     $cvc.toggleInputError(!$.payment.validateCardCVC($cvc.val(), cardType));
-                    $month.toggleInputError(!$.payment.validateCardExpiry($month.val(), $year.val()));
-                    $year.toggleInputError(!$.payment.validateCardExpiry($month.val(), $year.val()));
 
-                    $("#' . $this->brandContainerId . '").text(cardType);
+                    if ($exp.length) {
+                        $exp.toggleInputError(!$.payment.validateCardExpiry($exp.payment("cardExpiryVal")));
+                        var fullDate = $exp.val();
+                        var res = fullDate.split(" / ", 2);
+                        $month.val(res[0]);
+                        $year.val(res[1]);
+                    }else{
+                        $month.toggleInputError(!$.payment.validateCardExpiry($month.val(), $year.val()));
+                        $year.toggleInputError(!$.payment.validateCardExpiry($month.val(), $year.val()));
+                    }
 
                     if($form.find(".' . $this->errorClass . '").length != 0){
                         e.preventDefault();
@@ -325,7 +332,7 @@ class StripeForm extends \yii\widgets\ActiveForm {
     }
 
     /**
-     * Will generate month and year input. Like in Jquery Payment example.
+     * Will generate month and year input with 2 hidden inputs for month and year values.
      * @param array $options
      * @return string genetared input tag
      */
@@ -343,7 +350,11 @@ class StripeForm extends \yii\widgets\ActiveForm {
             StripeHelper::secCheck($options);
         }
         $options['data-stripe'] = self::MONTH_YEAR_ID;
-        return Html::input('text', null, null, $options);
+        $inputs = Html::input('text', null, null, $options);
+        //Append hidden year and month inputs that will get value from mixed and send to stripe
+        $inputs = $inputs . $this->monthInput(['type' => 'hidden']);
+        $inputs = $inputs . $this->yearInput(['type' => 'hidden']);
+        return $inputs;
     }
 
 }
