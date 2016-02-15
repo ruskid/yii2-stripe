@@ -13,7 +13,7 @@
     ],
     "require": {
         "yiisoft/yii2": "*",
-        "bower-asset/jquery.payment": "1.2.2"
+        "bower-asset/jquery.payment": "*"
     },
     "minimum-stability": "dev",
     "autoload": {
