@@ -199,7 +199,7 @@ class StripeForm extends \yii\widgets\ActiveForm {
         if ($this->applyJqueryPaymentValidation) {
             $js = 'jQuery(function($) {
                 $.fn.toggleInputError = function(erred) {
-                    this.parent(".form-group").toggleClass("' . $this->errorClass . '", erred);
+                    this.closest(".form-group").toggleClass("' . $this->errorClass . '", erred);
                     return this;
                 };
 
