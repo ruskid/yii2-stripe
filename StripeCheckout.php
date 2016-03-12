@@ -134,6 +134,7 @@ class StripeCheckout extends \yii\base\Widget {
                     'data-amount' => $this->amount,
                     'data-name' => $this->name,
                     'data-description' => $this->description,
+                    'data-image' => $this->image,
                     'data-currency' => $this->currency,
                     'data-panel-label' => $this->panelLabel,
                     'data-zip-code' => $this->validateZipCode,
