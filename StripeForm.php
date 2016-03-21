@@ -245,21 +245,19 @@ class StripeForm extends \yii\widgets\ActiveForm {
      * @return string genetared input tag
      */
     public function numberInput($options = []) {
-        if (empty($options)) {
-            $options = [
-                'id' => self::NUMBER_ID,
-                'class' => 'form-control',
-                'autocomplete' => self::AUTO_CC_ATTR,
-                'placeholder' => '•••• •••• •••• ••••',
-                'required' => true,
-                'type' => 'tel',
-                'size' => 20
-            ];
-        } else {
-            StripeHelper::secCheck($options);
-        }
-        $options['data-stripe'] = self::NUMBER_ID;
-        return Html::input('text', null, null, $options);
+        $mergedOptions = array_merge($options, [
+			'id' => self::NUMBER_ID,
+			'class' => 'form-control',
+			'autocomplete' => self::AUTO_CC_ATTR,
+			'placeholder' => '•••• •••• •••• ••••',
+			'required' => true,
+			'type' => 'tel',
+			'size' => 20
+		]);
+
+		StripeHelper::secCheck($mergedOptions);
+		$mergedOptions['data-stripe'] = self::NUMBER_ID;
+		return Html::input('text', null, null, $mergedOptions);
     }
 
     /**
@@ -268,21 +266,18 @@ class StripeForm extends \yii\widgets\ActiveForm {
      * @return string genetared input tag
      */
     public function cvcInput($options = []) {
-        if (empty($options)) {
-            $options = [
-                'id' => self::CVC_ID,
-                'class' => 'form-control',
-                'autocomplete' => 'off',
-                'placeholder' => '•••',
-                'required' => true,
-                'type' => 'tel',
-                'size' => 4
-            ];
-        } else {
-            StripeHelper::secCheck($options);
-        }
-        $options['data-stripe'] = self::CVC_ID;
-        return Html::input('text', null, null, $options);
+        $mergedOptions = array_merge($options, [
+			'id' => self::CVC_ID,
+			'class' => 'form-control',
+			'autocomplete' => 'off',
+			'placeholder' => '•••',
+			'required' => true,
+			'type' => 'tel',
+			'size' => 4
+		]);
+		StripeHelper::secCheck($mergedOptions);
+		$mergedOptions['data-stripe'] = self::CVC_ID;
+		return Html::input('text', null, null, $mergedOptions);
     }
 
     /**
@@ -291,22 +286,19 @@ class StripeForm extends \yii\widgets\ActiveForm {
      * @return string genetared input tag
      */
     public function yearInput($options = []) {
-        if (empty($options)) {
-            $options = [
-                'id' => self::YEAR_ID,
-                'class' => 'form-control',
-                'autocomplete' => self::AUTO_YEAR_ATTR,
-                'placeholder' => '••••',
-                'required' => true,
-                'type' => 'tel',
-                'maxlength' => 4,
-                'size' => 4
-            ];
-        } else {
-            StripeHelper::secCheck($options);
-        }
-        $options['data-stripe'] = self::YEAR_ID;
-        return Html::input('text', null, null, $options);
+        $mergedOptions = array_merge($options, [
+			'id' => self::YEAR_ID,
+			'class' => 'form-control',
+			'autocomplete' => self::AUTO_YEAR_ATTR,
+			'placeholder' => '••••',
+			'required' => true,
+			'type' => 'tel',
+			'maxlength' => 4,
+			'size' => 4
+		]);
+		StripeHelper::secCheck($mergedOptions);
+		$mergedOptions['data-stripe'] = self::YEAR_ID;
+		return Html::input('text', null, null, $mergedOptions);
     }
 
     /**
@@ -315,22 +307,20 @@ class StripeForm extends \yii\widgets\ActiveForm {
      * @return string genetared input tag
      */
     public function monthInput($options = []) {
-        if (empty($options)) {
-            $options = [
-                'id' => self::MONTH_ID,
-                'class' => 'form-control',
-                'autocomplete' => self::AUTO_MONTH_ATTR,
-                'placeholder' => '••',
-                'required' => true,
-                'type' => 'tel',
-                'maxlength' => 2,
-                'size' => 2
-            ];
-        } else {
-            StripeHelper::secCheck($options);
-        }
-        $options['data-stripe'] = self::MONTH_ID;
-        return Html::input('text', null, null, $options);
+        $mergedOptions = array_merge($options, [
+			'id' => self::MONTH_ID,
+			'class' => 'form-control',
+			'autocomplete' => self::AUTO_MONTH_ATTR,
+			'placeholder' => '••',
+			'required' => true,
+			'type' => 'tel',
+			'maxlength' => 2,
+			'size' => 2
+		]);
+
+		StripeHelper::secCheck($mergedOptions);
+		$mergedOptions['data-stripe'] = self::MONTH_ID;
+		return Html::input('text', null, null, $mergedOptions);
     }
 
     /**
@@ -339,24 +329,23 @@ class StripeForm extends \yii\widgets\ActiveForm {
      * @return string genetared input tag
      */
     public function monthAndYearInput($options = []) {
-        if (empty($options)) {
-            $options = [
-                'id' => self::MONTH_YEAR_ID,
-                'class' => 'form-control',
-                'autocomplete' => self::AUTO_EXP_ATTR,
-                'placeholder' => '•• / ••',
-                'required' => true,
-                'type' => 'tel',
-            ];
-        } else {
-            StripeHelper::secCheck($options);
-        }
-        $options['data-stripe'] = self::MONTH_YEAR_ID;
-        $inputs = Html::input('text', null, null, $options);
-        //Append hidden year and month inputs that will get value from mixed and send to stripe
-        $inputs = $inputs . $this->monthInput(['type' => 'hidden']);
-        $inputs = $inputs . $this->yearInput(['type' => 'hidden']);
-        return $inputs;
+        $mergedOptions = array_merge($options, [
+			'id' => self::MONTH_YEAR_ID,
+			'class' => 'form-control',
+			'autocomplete' => self::AUTO_EXP_ATTR,
+			'placeholder' => '•• / ••',
+			'required' => true,
+			'type' => 'tel',
+		]);
+
+		StripeHelper::secCheck($mergedOptions);
+		$mergedOptions['data-stripe'] = self::MONTH_YEAR_ID;
+		$inputs = Html::input('text', null, null, $mergedOptions);
+		
+		//Append hidden year and month inputs that will get value from mixed and send to stripe
+		$inputs = $inputs . $this->monthInput(['type' => 'hidden']);
+		$inputs = $inputs . $this->yearInput(['type' => 'hidden']);
+		return $inputs;
     }
 
 }
