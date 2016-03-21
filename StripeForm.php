@@ -245,16 +245,16 @@ class StripeForm extends \yii\widgets\ActiveForm {
      * @return string genetared input tag
      */
     public function numberInput($options = []) {
-        $mergedOptions = array_merge($options, [
-			'id' => self::NUMBER_ID,
-			'class' => 'form-control',
-			'autocomplete' => self::AUTO_CC_ATTR,
-			'placeholder' => '•••• •••• •••• ••••',
-			'required' => true,
-			'type' => 'tel',
-			'size' => 20
-		]);
-
+	$defaultOptions = [
+		'id' => self::NUMBER_ID,
+		'class' => 'form-control',
+		'autocomplete' => self::AUTO_CC_ATTR,
+		'placeholder' => '•••• •••• •••• ••••',
+		'required' => true,
+		'type' => 'tel',
+		'size' => 20
+	];
+	$mergedOptions = array_merge($defaultOptions, $options);
 	StripeHelper::secCheck($mergedOptions);
 	$mergedOptions['data-stripe'] = self::NUMBER_ID;
 	return Html::input('text', null, null, $mergedOptions);
@@ -266,15 +266,16 @@ class StripeForm extends \yii\widgets\ActiveForm {
      * @return string genetared input tag
      */
     public function cvcInput($options = []) {
-        $mergedOptions = array_merge($options, [
-			'id' => self::CVC_ID,
-			'class' => 'form-control',
-			'autocomplete' => 'off',
-			'placeholder' => '•••',
-			'required' => true,
-			'type' => 'tel',
-			'size' => 4
-		]);
+	$defaultOptions = [
+		'id' => self::CVC_ID,
+		'class' => 'form-control',
+		'autocomplete' => 'off',
+		'placeholder' => '•••',
+		'required' => true,
+		'type' => 'tel',
+		'size' => 4
+	];
+	$mergedOptions = array_merge($defaultOptions, $options);
 	StripeHelper::secCheck($mergedOptions);
 	$mergedOptions['data-stripe'] = self::CVC_ID;
 	return Html::input('text', null, null, $mergedOptions);
@@ -286,16 +287,17 @@ class StripeForm extends \yii\widgets\ActiveForm {
      * @return string genetared input tag
      */
     public function yearInput($options = []) {
-        $mergedOptions = array_merge($options, [
-			'id' => self::YEAR_ID,
-			'class' => 'form-control',
-			'autocomplete' => self::AUTO_YEAR_ATTR,
-			'placeholder' => '••••',
-			'required' => true,
-			'type' => 'tel',
-			'maxlength' => 4,
-			'size' => 4
-		]);
+        $defaultOptions = [
+		'id' => self::YEAR_ID,
+		'class' => 'form-control',
+		'autocomplete' => self::AUTO_YEAR_ATTR,
+		'placeholder' => '••••',
+		'required' => true,
+		'type' => 'tel',
+		'maxlength' => 4,
+		'size' => 4
+	];
+	$mergedOptions = array_merge($defaultOptions, $options);
 	StripeHelper::secCheck($mergedOptions);
 	$mergedOptions['data-stripe'] = self::YEAR_ID;
 	return Html::input('text', null, null, $mergedOptions);
@@ -307,17 +309,17 @@ class StripeForm extends \yii\widgets\ActiveForm {
      * @return string genetared input tag
      */
     public function monthInput($options = []) {
-        $mergedOptions = array_merge($options, [
-			'id' => self::MONTH_ID,
-			'class' => 'form-control',
-			'autocomplete' => self::AUTO_MONTH_ATTR,
-			'placeholder' => '••',
-			'required' => true,
-			'type' => 'tel',
-			'maxlength' => 2,
-			'size' => 2
-		]);
-
+	$defaultOptions = [
+		'id' => self::MONTH_ID,
+		'class' => 'form-control',
+		'autocomplete' => self::AUTO_MONTH_ATTR,
+		'placeholder' => '••',
+		'required' => true,
+		'type' => 'tel',
+		'maxlength' => 2,
+		'size' => 2
+	];
+	$mergedOptions = array_merge($defaultOptions, $options);
 	StripeHelper::secCheck($mergedOptions);
 	$mergedOptions['data-stripe'] = self::MONTH_ID;
 	return Html::input('text', null, null, $mergedOptions);
@@ -329,15 +331,15 @@ class StripeForm extends \yii\widgets\ActiveForm {
      * @return string genetared input tag
      */
     public function monthAndYearInput($options = []) {
-        $mergedOptions = array_merge($options, [
-			'id' => self::MONTH_YEAR_ID,
-			'class' => 'form-control',
-			'autocomplete' => self::AUTO_EXP_ATTR,
-			'placeholder' => '•• / ••',
-			'required' => true,
-			'type' => 'tel',
-		]);
-
+       $defaultOptions = [
+		'id' => self::MONTH_YEAR_ID,
+		'class' => 'form-control',
+		'autocomplete' => self::AUTO_EXP_ATTR,
+		'placeholder' => '•• / ••',
+		'required' => true,
+		'type' => 'tel',
+	];
+	$mergedOptions = array_merge($defaultOptions, $options);
 	StripeHelper::secCheck($mergedOptions);
 	$mergedOptions['data-stripe'] = self::MONTH_YEAR_ID;
 	$inputs = Html::input('text', null, null, $mergedOptions);
