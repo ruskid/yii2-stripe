@@ -255,9 +255,9 @@ class StripeForm extends \yii\widgets\ActiveForm {
 			'size' => 20
 		]);
 
-		StripeHelper::secCheck($mergedOptions);
-		$mergedOptions['data-stripe'] = self::NUMBER_ID;
-		return Html::input('text', null, null, $mergedOptions);
+	StripeHelper::secCheck($mergedOptions);
+	$mergedOptions['data-stripe'] = self::NUMBER_ID;
+	return Html::input('text', null, null, $mergedOptions);
     }
 
     /**
@@ -275,9 +275,9 @@ class StripeForm extends \yii\widgets\ActiveForm {
 			'type' => 'tel',
 			'size' => 4
 		]);
-		StripeHelper::secCheck($mergedOptions);
-		$mergedOptions['data-stripe'] = self::CVC_ID;
-		return Html::input('text', null, null, $mergedOptions);
+	StripeHelper::secCheck($mergedOptions);
+	$mergedOptions['data-stripe'] = self::CVC_ID;
+	return Html::input('text', null, null, $mergedOptions);
     }
 
     /**
@@ -296,9 +296,9 @@ class StripeForm extends \yii\widgets\ActiveForm {
 			'maxlength' => 4,
 			'size' => 4
 		]);
-		StripeHelper::secCheck($mergedOptions);
-		$mergedOptions['data-stripe'] = self::YEAR_ID;
-		return Html::input('text', null, null, $mergedOptions);
+	StripeHelper::secCheck($mergedOptions);
+	$mergedOptions['data-stripe'] = self::YEAR_ID;
+	return Html::input('text', null, null, $mergedOptions);
     }
 
     /**
@@ -318,9 +318,9 @@ class StripeForm extends \yii\widgets\ActiveForm {
 			'size' => 2
 		]);
 
-		StripeHelper::secCheck($mergedOptions);
-		$mergedOptions['data-stripe'] = self::MONTH_ID;
-		return Html::input('text', null, null, $mergedOptions);
+	StripeHelper::secCheck($mergedOptions);
+	$mergedOptions['data-stripe'] = self::MONTH_ID;
+	return Html::input('text', null, null, $mergedOptions);
     }
 
     /**
@@ -338,14 +338,14 @@ class StripeForm extends \yii\widgets\ActiveForm {
 			'type' => 'tel',
 		]);
 
-		StripeHelper::secCheck($mergedOptions);
-		$mergedOptions['data-stripe'] = self::MONTH_YEAR_ID;
-		$inputs = Html::input('text', null, null, $mergedOptions);
+	StripeHelper::secCheck($mergedOptions);
+	$mergedOptions['data-stripe'] = self::MONTH_YEAR_ID;
+	$inputs = Html::input('text', null, null, $mergedOptions);
 		
-		//Append hidden year and month inputs that will get value from mixed and send to stripe
-		$inputs = $inputs . $this->monthInput(['type' => 'hidden']);
-		$inputs = $inputs . $this->yearInput(['type' => 'hidden']);
-		return $inputs;
+	//Append hidden year and month inputs that will get value from mixed and send to stripe
+	$inputs = $inputs . $this->monthInput(['type' => 'hidden']);
+	$inputs = $inputs . $this->yearInput(['type' => 'hidden']);
+	return $inputs;
     }
 
 }
