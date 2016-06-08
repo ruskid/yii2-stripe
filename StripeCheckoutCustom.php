@@ -57,6 +57,8 @@ class StripeCheckoutCustom extends StripeCheckout {
      */
     public $closedFunction;
 
+    private static $handlerRegistered = false;
+
     /**
      * @see Init extension default
      */
@@ -92,11 +94,18 @@ class StripeCheckoutCustom extends StripeCheckout {
 
         $view->registerJsFile($this->stripeJs, ['position' => \yii\web\View::POS_END]);
 
-        $js = "var handler = StripeCheckout.configure({
-                key: '" . Yii::$app->stripe->publicKey . "',
-                token: " . $this->tokenFunction . "
-        });";
-        $view->registerJs($js);
+        if (!self::$handlerRegistered) {
+            $js = "var handler = StripeCheckout.configure({
+                key: '" . Yii::$app->stripe->publicKey . "'
+            });";
+            $view->registerJs($js);
+            $js = 'jQuery("window").on("popstate", function(e) {
+                handler.close();
+            });';
+            $view->registerJs($js);
+
+            self::$handlerRegistered = true;
+        }
 
         $js = 'jQuery("#' . $this->buttonOptions['id'] . '").on("click", function(e) {
                     handler.open({
@@ -109,17 +118,14 @@ class StripeCheckoutCustom extends StripeCheckout {
                         zipCode: "' . $this->validateZipCode . '",
                         email: "' . $this->userEmail . '",
                         allowRememberMe: "' . $this->allowRemember . '",
+                        token: ' . $this->tokenFunction . ',
                         opened: ' . $this->openedFunction . ',
-                        closed: ' . $this->closedFunction . ',
+                        closed: ' . $this->closedFunction . '
                     });
                     e.preventDefault();
          });';
         $view->registerJs($js);
 
-        $js = 'jQuery("window").on("popstate", function(e) {
-                handler.close();
-        });';
-        $view->registerJs($js);
     }
 
     /**
