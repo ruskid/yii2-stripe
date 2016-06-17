@@ -144,7 +144,7 @@ class StripeForm extends \yii\widgets\ActiveForm {
         if (!isset($this->stripeRequestHandler)) {
             $this->stripeRequestHandler = 'jQuery(function($) {
                 $("#' . $this->options['id'] . '").submit(function(event) {
-                	event.preventDefault();
+                    event.preventDefault();
                 });
             });';
         }
@@ -231,10 +231,10 @@ class StripeForm extends \yii\widgets\ActiveForm {
                         e.preventDefault();
                         return false;
                     }else{
-						$(this).prop("disabled", true);
-						Stripe.card.createToken($form, stripeResponseHandler);
-						return true;
-					}
+                        $(this).prop("disabled", true);
+                        Stripe.card.createToken($form, stripeResponseHandler);
+                        return true;
+                    }
                 });
             });';
             $view->registerJs($js);
