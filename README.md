@@ -125,6 +125,9 @@ use ruskid\stripe\StripeForm;
  </div>
 
  <div id="payment-errors"></div>
+ 
+ <?= Html::submitButton('Submit'); ?>
+ 
  <?php StripeForm::end(); ?>
 ```
 
