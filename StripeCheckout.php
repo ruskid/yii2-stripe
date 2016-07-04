@@ -97,6 +97,13 @@ class StripeCheckout extends \yii\base\Widget {
      */
     public $allowRemember;
 
+    /**
+     * @see Stripe. Specify whether Checkout should collect the user's billing address (true or false).
+     * The default is false.
+     * @var boolean
+     */
+    public $collectBillingAddress;
+
     const BUTTON_CLASS = 'stripe-button';
 
     /**
@@ -105,6 +112,7 @@ class StripeCheckout extends \yii\base\Widget {
     public function init() {
         StripeHelper::prepareBoolean($this->allowRemember);
         StripeHelper::prepareBoolean($this->validateZipCode);
+        StripeHelper::prepareBoolean($this->collectBillingAddress);
         parent::init();
     }
 
@@ -141,6 +149,7 @@ class StripeCheckout extends \yii\base\Widget {
                     'data-email' => $this->userEmail,
                     'data-label' => $this->label,
                     'data-allow-remember-me' => $this->allowRemember,
+                    'data-billing-address' => $this->collectBillingAddress,
                     'class' => self::BUTTON_CLASS,
         ]);
     }
