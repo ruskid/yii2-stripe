@@ -26,6 +26,13 @@ class StripeCheckout extends \yii\base\Widget {
     public $action = "/";
 
     /**
+     * Additional options to be added to the opening form-tag.
+     * @var array additional form-tag options.
+     * @see Html::beginForm()
+     */
+    public $formOptions = [];
+
+    /**
      * @see Stripe. The amount (in cents) that's shown to the user.
      * Note that you will still have to explicitly include it when you create a charge using the Stripe API.
      * @var integer Stripe's amount
@@ -128,7 +135,9 @@ class StripeCheckout extends \yii\base\Widget {
      * @return string the generated stripe's modal form
      */
     private function generateStripeForm() {
-        return Html::beginForm($this->action, 'POST') . $this->generateScriptTag() . Html::endForm();
+        return Html::beginForm($this->action, 'POST', $this->formOptions)
+            . $this->generateScriptTag()
+            . Html::endForm();
     }
 
     /**
