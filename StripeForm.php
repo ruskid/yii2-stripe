@@ -144,10 +144,7 @@ class StripeForm extends \yii\widgets\ActiveForm {
         if (!isset($this->stripeRequestHandler)) {
             $this->stripeRequestHandler = 'jQuery(function($) {
                 $("#' . $this->options['id'] . '").submit(function(event) {
-                    var $form = $(this);
-                    $form.find("button").prop("disabled", true);
-                    Stripe.card.createToken($form, stripeResponseHandler);
-                    return false;
+                    event.preventDefault();
                 });
             });';
         }
@@ -158,7 +155,7 @@ class StripeForm extends \yii\widgets\ActiveForm {
      */
     public function run() {
         parent::run();
-        
+
         $this->registerFormScripts();
         if ($this->applyJqueryPaymentFormat || $this->applyJqueryPaymentValidation) {
             $this->registerJqueryPaymentScripts();
@@ -232,6 +229,11 @@ class StripeForm extends \yii\widgets\ActiveForm {
 
                     if($form.find(".' . $this->errorClass . '").length != 0){
                         e.preventDefault();
+                        return false;
+                    }else{
+                        $(this).prop("disabled", true);
+                        Stripe.card.createToken($form, stripeResponseHandler);
+                        return true;
                     }
                 });
             });';
@@ -343,7 +345,7 @@ class StripeForm extends \yii\widgets\ActiveForm {
 	StripeHelper::secCheck($mergedOptions);
 	$mergedOptions['data-stripe'] = self::MONTH_YEAR_ID;
 	$inputs = Html::input('text', null, null, $mergedOptions);
-		
+
 	//Append hidden year and month inputs that will get value from mixed and send to stripe
 	$inputs = $inputs . $this->monthInput(['type' => 'hidden']);
 	$inputs = $inputs . $this->yearInput(['type' => 'hidden']);
