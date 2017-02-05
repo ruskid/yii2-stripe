@@ -155,7 +155,7 @@ class StripeForm extends \yii\widgets\ActiveForm {
             });';
         }
         
-        if($this->applyJqueryPaymentValidation && !isset($this->cardValidationBrandHandler)){
+        if($this->applyJqueryPaymentValidation && !isset($this->brandIdentificationHandler)){
             $this->brandIdentificationHandler = 'function(cardType){
                 $("#' . $this->brandContainerId . '").text(cardType);
             }';    
