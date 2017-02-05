@@ -107,6 +107,12 @@ class StripeForm extends \yii\widgets\ActiveForm {
      */
     public $brandContainerId = 'cc-brand';
 
+    /**
+     * Used if jquery payment validation is true. Called when card brand is identified
+     * @var JsExpression|string
+     */
+    public $brandIdentificationHandler;
+    
     //Stripe constants
     const NUMBER_ID = 'number';
     const CVC_ID = 'cvc';
@@ -147,6 +153,12 @@ class StripeForm extends \yii\widgets\ActiveForm {
                     event.preventDefault();
                 });
             });';
+        }
+        
+        if($this->applyJqueryPaymentValidation && !isset($this->cardValidationBrandHandler)){
+            $this->brandIdentificationHandler = 'function(cardType){
+                $("#' . $this->brandContainerId . '").text(cardType);
+            }';    
         }
     }
 
@@ -202,7 +214,7 @@ class StripeForm extends \yii\widgets\ActiveForm {
                     return this;
                 };
 
-                $("#' . $this->options['id'] . ' button").on("click", function(e) {
+                $("#' . $this->options['id'] . ' :submit").on("click", function(e) {
                     var $form = $("#' . $this->options['id'] . '");
                     var $number = $("input[data-stripe=' . self::NUMBER_ID . ']");
                     var $cvc = $("input[data-stripe=' . self::CVC_ID . ']");
@@ -211,7 +223,7 @@ class StripeForm extends \yii\widgets\ActiveForm {
                     var $year = $("input[data-stripe=' . self::YEAR_ID . ']");
 
                     var cardType = $.payment.cardType($number.val());
-                    $("#' . $this->brandContainerId . '").text(cardType);
+                    (' . $this->brandIdentificationHandler .')(cardType);
 
                     $number.toggleInputError(!$.payment.validateCardNumber($number.val()));
                     $cvc.toggleInputError(!$.payment.validateCardCVC($cvc.val(), cardType));
