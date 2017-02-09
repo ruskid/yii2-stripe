@@ -225,26 +225,30 @@ class StripeForm extends \yii\widgets\ActiveForm {
                     var cardType = $.payment.cardType($number.val());
                     (' . $this->brandIdentificationHandler .')(cardType);
 
-                    $number.toggleInputError(!$.payment.validateCardNumber($number.val()));
-                    $cvc.toggleInputError(!$.payment.validateCardCVC($cvc.val(), cardType));
+                    var validCard = $.payment.validateCardNumber($number.val());
+                    $number.toggleInputError(!validCard);
+                    
+                    var validCVC = $.payment.validateCardCVC($cvc.val(), cardType);
+                    $cvc.toggleInputError(!validCVC);
 
                     if ($exp.length) {
-                        $exp.toggleInputError(!$.payment.validateCardExpiry($exp.payment("cardExpiryVal")));
+                        var validExpiry = $.payment.validateCardExpiry($exp.payment("cardExpiryVal"));
+                        $exp.toggleInputError(!validExpiry);
+                        
                         var fullDate = $exp.val();
                         var res = fullDate.split(" / ", 2);
                         $month.val(res[0]);
                         $year.val(res[1]);
                     }else{
-                        $month.toggleInputError(!$.payment.validateCardExpiry($month.val(), $year.val()));
-                        $year.toggleInputError(!$.payment.validateCardExpiry($month.val(), $year.val()));
+                        var validExpiry = $.payment.validateCardExpiry($month.val(), $year.val());
+                        $month.toggleInputError(!validExpiry);
+                        $year.toggleInputError(!validExpiry);
                     }
 
-                    if($form.find(".' . $this->errorClass . '").length != 0){
+                    if(!validCard || !validCVC || !validExpiry){
                         e.preventDefault();
                         return false;
                     }else{
-                        $(this).prop("disabled", true);
-                        Stripe.card.createToken($form, stripeResponseHandler);
                         return true;
                     }
                 });
