@@ -166,12 +166,12 @@ class StripeForm extends \yii\widgets\ActiveForm {
      * Will show the Stripe's simple form modal
      */
     public function run() {
-        parent::run();
-
         $this->registerFormScripts();
         if ($this->applyJqueryPaymentFormat || $this->applyJqueryPaymentValidation) {
             $this->registerJqueryPaymentScripts();
         }
+	    
+	return parent::run();
     }
 
     /**
