@@ -40,7 +40,7 @@ Check stripe documentation for more options.
 ```php
 use ruskid\stripe\StripeCheckout;
 
-<?= 
+<?=
 StripeCheckout::widget([
     'action' => '/',
     'name' => 'Demo test',
@@ -55,7 +55,7 @@ Custom checkout form is an extended version of simple form, but you can customiz
 ```php
 use ruskid\stripe\StripeCheckoutCustom;
 
-<?= 
+<?=
 StripeCheckoutCustom::widget([
     'action' => '/',
     'name' => 'Demo test',
@@ -65,69 +65,70 @@ StripeCheckoutCustom::widget([
     'buttonOptions' => [
         'class' => 'btn btn-lg btn-success',
     ],
-    'tokenFunction' => new JsExpression('function(token) { 
-                alert("Here you should control your token."); 
+    'tokenFunction' => new JsExpression('function(token) {
+                alert("Here you should control your token.");
     }'),
-    'openedFunction' => new JsExpression('function() { 
-                alert("Model opened"); 
+    'openedFunction' => new JsExpression('function() {
+                alert("Model opened");
     }'),
-    'closedFunction' => new JsExpression('function() { 
-                alert("Model closed"); 
+    'closedFunction' => new JsExpression('function() {
+                alert("Model closed");
     }'),
 ]);
 ?>
 ```
-Example of a custom form. StripeForm is an <b>extended ActiveForm</b> so you can perform validation of amount and other attributes you want. 
-Use of <b>Jquery Payment library</b> is optional, you can disable format and validation and write your own implementation.
-You can also change JsExpression for response and request handlers.
+StripeFormV2 - is getting depreciated on 14 September 2019
+
+You can use new StripeForm.php. But I don't see it so useful
 
 ```php
 use ruskid\stripe\StripeForm;
 
- <?php
  $form = StripeForm::begin([
-             'tokenInputName' => 'stripeToken',
-             'errorContainerId' => 'payment-errors',
-             'brandContainerId' => 'cc-brand',
-             'errorClass' => 'has-error',
-             'applyJqueryPaymentFormat' => true,
-             'applyJqueryPaymentValidation' => true,
-             'options' => ['autocomplete' => 'on']
+     'action' => Url::toRoute('payment/create'),
+     'options' => [
+         'autocomplete' => 'on',
+         'data-secret' => 'payment intent client secret',
+     ],
+     'elementsOptions' => [
+         'locale' => 'es' // stripe elements language
+     ],
+     'formEvents' => [
+         'beforeSubmit' => 'what ever form events',
+         'submit' => new JsExpression('function(event) {
+              // you can define as you want
+              // stripe.handleCardPayment()
+              // stripe.createToken()
+         }'),
+     ]
  ]);
- ?>
 
- <div class="form-group">
-     <label for="number" class="control-label">Card number</label>
-     <span id="cc-brand"></span>
-     <?= $form->numberInput() ?>
- </div>
+echo $form->cardInput([
+    'hidePostalCode' => true,
+    'style' => [
+        'base' => [
+            'color' => 'blue',
+        ],
+        'invalid' => [
+            'color' => 'red',
+            'iconColor' => 'red'
+        ]
+    ],
+], [
+    'change' => new JsExpression('function(event) {        
+        if (event.error) {
+            alert(event.error.message);
+        } else {
+           // input is good
+        }
+    }')
+]);
 
- <div class="form-group">
-     <label for="cvc" class="control-label">CVC</label>
-     <?= $form->cvcInput() ?>
- </div>
+echo $form->cardNumber();
+echo $form->cardExpiry();
+echo $form->cardCvc();
 
- <!-- Use month and year in the same input. -->
- <div class="form-group">
-     <label for="exp-month-year" class="control-label">Card expiry</label>
-     <?= $form->monthAndYearInput() ?>
- </div>
+echo Html::submitButton('Submit');
 
- <!-- OR in two separate inputs. -->
- <div class="form-group">
-     <label for="exp-month" class="control-label">Month</label>
-     <?= $form->monthInput() ?>
- </div>
-
- <div class="form-group">
-     <label for="exp-year" class="control-label">Year</label>
-     <?= $form->yearInput() ?>
- </div>
-
- <div id="payment-errors"></div>
- 
- <?= Html::submitButton('Submit'); ?>
- 
- <?php StripeForm::end(); ?>
+StripeForm::end();
 ```
-
